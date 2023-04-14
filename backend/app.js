@@ -36,9 +36,9 @@ app.use(helmet.crossOriginResourcePolicy({
   })
 );
 
-app.use(routes);
+app.use('/api', routes);
 
-app.use((_req, _res, next) => {
+app.use((req, res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
     err.errors = { message: "The requested resource couldn't be found." };
@@ -46,7 +46,7 @@ app.use((_req, _res, next) => {
     next(err);
   });
 
-  app.use((err, _req, _res, next) => {
+  app.use((err, req, res, next) => {
     // check if error is a Sequelize error:
     if (err instanceof ValidationError) {
       let errors = {};
@@ -59,7 +59,7 @@ app.use((_req, _res, next) => {
     next(err);
   });
 
-  app.use((err, _req, res, _next) => {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     console.error(err);
     res.json({
