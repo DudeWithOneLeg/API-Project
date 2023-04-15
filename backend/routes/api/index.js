@@ -37,7 +37,6 @@ router.get('/set-token-cookie', async (_req, res) => {
       username: 'demo'
     }
   });
-  console.log(user)
   setTokenCookie(res, user);
   return res.json({ user: user });
 })
